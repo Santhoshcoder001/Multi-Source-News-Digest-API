@@ -1,0 +1,1 @@
+export { summarizeArticle } from '../services/articleSummarizer.js';

@@ -1,0 +1,1 @@
+export { DEFAULT_RSS_FEEDS, fetchFromRss } from '../services/rssCollector.js';

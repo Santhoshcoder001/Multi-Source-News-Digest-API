@@ -1,0 +1,1 @@
+export { fetchFromNewsApi } from '../services/newsCollector.js';
