@@ -1,0 +1,86 @@
+{
+  "entries": [
+    [
+      "2026-05-20",
+      {
+        "clusters": [
+          {
+            "clusterId": "7153e76c-0fcc-4d72-aceb-8dabaa77b7c4",
+            "topic": "general",
+            "articles": [
+              {
+                "id": "87ac13db-7374-4922-987f-ed2d416a70de",
+                "title": "Patch Notes 1.29.0 - ARC Raiders",
+                "description": "ARC Raiders is a multiplayer extraction adventure, set in a lethal future earth, ravaged by a mysterious mechanized threat known as ARC.",
+                "content": "Raiders!\r\nIt seems the rumors are true. After long avoiding traveling below ground, the Nomadic Envoys have arrived in Speranza. On the hunt for valuable gear and weaponry, these mysterious members o… [+11843 chars]",
+                "url": "https://arcraiders.com/news/patch-notes-1-29-0",
+                "source": "Arcraiders.com",
+                "publishedAt": "2026-05-19T09:06:36Z",
+                "category": "technology",
+                "summary": "ARC Raiders is a multiplayer extraction adventure, set in a lethal future earth, ravaged by a mysterious mechanized threat known as ARC.",
+                "sentiment": "neutral"
+              },
+              {
+                "id": "009aded0-6036-48a4-b3d1-a4ede7b62409",
+                "title": "Alexa+ now generates podcast episodes on demand - About Amazon",
+                "description": "A new feature creates AI-generated audio episodes on any topic, ready to listen wherever you are.",
+                "content": "A new interaction model lets you browse, customize, and build your orders naturallywithout the typical back and forth.",
+                "url": "https://www.aboutamazon.com/news/devices/alexa-podcasts-ai-generated-audio-episodes",
+                "source": "Aboutamazon.com",
+                "publishedAt": "2026-05-19T07:51:56Z",
+                "category": "technology",
+                "summary": "A new feature creates AI-generated audio episodes on any topic, ready to listen wherever you are.",
+                "sentiment": "neutral"
+              },
+              {
+                "id": "6fbca6da-f508-4c2f-9364-021308213ed2",
+                "title": "LG will release the first 1000Hz, 1080p gaming monitor this year - The Verge",
+                "description": "LG’s 24.5-inch UltraGear 25G590B gaming monitor will be the first 1000Hz 1080p display when it launches in the second half of 2026.",
+                "content": "<ul><li></li><li></li><li></li></ul>\r\nThe 25G590B is a 24.5-inch IPS screen with the highest refresh rate weve seen for a 1080p gaming monitor.\r\nThe 25G590B is a 24.5-inch IPS screen with the highest… [+2725 chars]",
+                "url": "https://www.theverge.com/games/933204/lg-1000hz-1080p-ultragear-25g590b",
+                "source": "The Verge",
+                "publishedAt": "2026-05-19T01:10:00Z",
+                "category": "technology",
+                "summary": "LG’s 24.5-inch UltraGear 25G590B gaming monitor will be the first 1000Hz 1080p display when it launches in the second half of 2026.",
+                "sentiment": "neutral"
+              },
+              {
+                "id": "2afaaadc-b7df-4bf3-b97a-7f59b9b1f802",
+                "title": "Nintendo reveals new mobile game Pictonico - Nintendo Everything",
+                "description": "Nintendo is releasing a brand new mobile game titled Pictonico, the company just revealed. It will be available on May 28, 2026. Pictonico is a mini-game experience centered around using photos. You can use your own face (or friends as well) across 80 differe…",
+                "content": "Nintendo is releasing a brand new mobile game titled Pictonico, the company just revealed. It will be available on May 28, 2026.\r\nPictonico is a mini-game experience centered around using photos. You… [+1520 chars]",
+                "url": "https://nintendoeverything.com/nintendo-reveals-new-mobile-game-pictonico/",
+                "source": "Nintendoeverything.com",
+                "publishedAt": "2026-05-18T23:50:43Z",
+                "category": "technology",
+                "summary": "Nintendo is releasing a brand new mobile game titled Pictonico, the company just revealed. It will be available on May 28, 2026. Pictonico is a mini-game experience centered around using photos.",
+                "sentiment": "neutral"
+              },
+              {
+                "id": "61e84a5a-c803-44ba-aa83-c9ed23199ea0",
+                "title": "Every Pokémon Is Someone's Favorite And Now There's Proof - Kotaku",
+                "description": "Someone out there loves Goldeen, I promise",
+                "content": "There are over a thousand different Pokémon, and not all of them are bangers. Some of them have designs that might make you recoil, while others are just plain uninteresting. How often do you think a… [+3619 chars]",
+                "url": "https://kotaku.com/even-the-worst-pokemon-someones-favorites-now-theres-proof-2000697141",
+                "source": "Kotaku",
+                "publishedAt": "2026-05-18T21:31:09Z",
+                "category": "technology",
+                "summary": "Someone out there loves Goldeen, I promise",
+                "sentiment": "neutral"
+              }
+            ],
+            "keywords": [
+              "1000hz",
+              "29",
+              "alexa",
+              "arc",
+              "episodes"
+            ]
+          }
+        ],
+        "lastUpdated": "2026-05-20T09:29:21.176Z",
+        "articleCount": 5
+      }
+    ]
+  ]
+}

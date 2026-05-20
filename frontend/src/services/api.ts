@@ -1,9 +1,11 @@
 import axios, { AxiosError } from 'axios';
 
-const apiBaseUrl = import.meta.env.VITE_API_URL ?? (import.meta.env.PROD ? '/api' : 'http://localhost:3001/api');
+const rawBase = import.meta.env.VITE_API_BASE_URL ?? (import.meta.env.PROD ? '' : 'http://localhost:3001');
+const apiBaseUrl = rawBase.replace(/\/$/, '') + '/api';
 
 const api = axios.create({
-  baseURL: apiBaseUrl
+  baseURL: apiBaseUrl,
+  timeout: 10000
 });
 
 const rootApi = axios.create();
@@ -40,6 +42,11 @@ export async function fetchDigest(params: { sentiment?: string; limit?: number; 
     const response = await api.get('/digest', { params });
     return response.data;
   } catch (error) {
+    // detect likely CORS or backend unavailable
+    if (axios.isAxiosError(error) && !error.response) {
+      throw new Error('Backend unavailable or CORS blocked');
+    }
+
     throw enrichError(error, 'Failed to fetch digest');
   }
 }
@@ -58,15 +65,42 @@ export async function fetchTopics() {
     const response = await api.get('/topics');
     return response.data;
   } catch (error) {
+    if (axios.isAxiosError(error) && !error.response) {
+      throw new Error('Backend unavailable or CORS blocked');
+    }
+
     throw enrichError(error, 'Failed to fetch topics');
+  }
+}
+
+export async function fetchNewsCategory(category?: string) {
+  try {
+    const path = category ? `/news/${encodeURIComponent(category)}` : '/news';
+    const response = await api.get(path);
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error) && !error.response) {
+      throw new Error('Backend unavailable or CORS blocked');
+    }
+
+    throw enrichError(error, 'Failed to fetch news');
   }
 }
 
 export async function checkHealth() {
   try {
-    const response = await rootApi.get(`${apiBaseUrl.replace(/\/api$/, '')}/health`);
+    const healthUrl = apiBaseUrl.replace(/\/api$/, '') + '/health';
+    const response = await rootApi.get(healthUrl, { timeout: 5000 });
     return response.data;
   } catch (error) {
+    if (axios.isAxiosError(error) && error.code === 'ECONNABORTED') {
+      throw new Error('Health check timeout');
+    }
+
+    if (axios.isAxiosError(error) && !error.response) {
+      throw new Error('Backend unavailable or CORS blocked');
+    }
+
     throw enrichError(error, 'Failed to check health');
   }
 }

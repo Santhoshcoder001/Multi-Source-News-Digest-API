@@ -41,10 +41,7 @@ export async function collectAllNews() {
       label: 'BBC RSS',
       promise: fetchFromRss(DEFAULT_RSS_FEEDS.BBC_NEWS, 'BBC News')
     },
-    {
-      label: 'Reuters RSS',
-      promise: fetchFromRss(DEFAULT_RSS_FEEDS.REUTERS_TOP_NEWS, 'Reuters')
-    }
+    // Reuters feed removed due to intermittent DNS failures (was: DEFAULT_RSS_FEEDS.REUTERS_TOP_NEWS)
   ];
 
   const settledResults = await Promise.allSettled(jobs.map(({ promise }) => promise));

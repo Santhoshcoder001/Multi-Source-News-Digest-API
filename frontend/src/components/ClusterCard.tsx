@@ -10,7 +10,10 @@ type Cluster = {
     source?: string;
     publishedAt?: string;
     summary?: string;
+    description?: string;
     sentiment?: 'positive' | 'neutral' | 'negative';
+    summaryProvider?: 'gemini' | 'openai' | 'fallback';
+    fallbackUsed?: boolean;
   }>;
 };
 

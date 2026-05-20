@@ -60,9 +60,14 @@ export async function processArticles(articles) {
     return clusterArticles([]);
   }
 
-  await runWithConcurrencyLimit(cleanedArticles, CONCURRENCY_LIMIT, async (article, index) => {
-    const position = index + 1;
-    const total = cleanedArticles.length;
+  // Only process up to 5 articles to avoid overwhelming Gemini in development
+  const articlesToProcess = cleanedArticles.slice(0, 5);
+  const processedArticles = [];
+
+  for (let i = 0; i < articlesToProcess.length; i += 1) {
+    const article = articlesToProcess[i];
+    const position = i + 1;
+    const total = articlesToProcess.length;
 
     console.log(`Processing article ${position} of ${total}: ${buildDisplayTitle(article)}...`);
 
@@ -71,10 +76,20 @@ export async function processArticles(articles) {
     article.summary = summaryResult?.summary ?? normalizeText(article?.description);
     article.sentiment = summaryResult?.sentiment ?? 'neutral';
 
-    return article;
-  });
+    processedArticles.push(article);
 
-  const clusters = await clusterArticles(cleanedArticles);
+    // Pause between requests to avoid rate-limit flooding
+    // 2 seconds is conservative for Gemini rate limits
+    // eslint-disable-next-line no-await-in-loop
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+  }
+
+  // replace cleanedArticles with processed subset for clustering
+  // include processedArticles first, then any remaining articles (unprocessed) to preserve ordering
+  const remaining = cleanedArticles.slice(processedArticles.length);
+  const finalArticles = [...processedArticles, ...remaining];
+
+  const clusters = await clusterArticles(finalArticles);
 
   console.log(`[processors] Total time taken: ${Date.now() - startedAt}ms`);
 

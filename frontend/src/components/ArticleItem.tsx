@@ -5,7 +5,10 @@ type ArticleItemProps = {
     source?: string;
     publishedAt?: string;
     summary?: string;
+    description?: string;
     sentiment?: 'positive' | 'neutral' | 'negative';
+    summaryProvider?: 'gemini' | 'openai' | 'fallback';
+    fallbackUsed?: boolean;
   };
 };
 
@@ -41,6 +44,15 @@ export default function ArticleItem({ article }: ArticleItemProps) {
   const sentiment = article.sentiment ?? 'neutral';
   const sentimentLabel =
     sentiment === 'positive' ? '😊 Positive' : sentiment === 'negative' ? '😟 Negative' : '😐 Neutral';
+  
+  // Display priority: summary OR description OR fallback message
+  const displaySummary = article.summary || article.description || 'No summary available';
+  
+  // Provider badge label
+  const providerLabel = article.summaryProvider === 'gemini' ? 'Gemini' 
+    : article.summaryProvider === 'openai' ? 'OpenAI' 
+    : article.summaryProvider === 'fallback' ? 'Fallback' 
+    : 'Local';
 
   return (
     <article className="article-item">
@@ -54,8 +66,10 @@ export default function ArticleItem({ article }: ArticleItemProps) {
         <span>{article.source ?? 'Unknown source'}</span>
         <span>•</span>
         <span>{formatRelativeTime(article.publishedAt)}</span>
+        <span>•</span>
+        <span className={`provider-badge provider-${article.summaryProvider ?? 'local'}`}>{providerLabel}</span>
       </p>
-      <p className="article-summary">{article.summary ?? ''}</p>
+      <p className="article-summary">{displaySummary}</p>
     </article>
   );
 }

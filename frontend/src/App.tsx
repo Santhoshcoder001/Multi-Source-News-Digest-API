@@ -3,6 +3,7 @@ import ClusterCard from './components/ClusterCard';
 import ErrorBanner from './components/ErrorBanner';
 import LoadingSpinner from './components/LoadingSpinner';
 import { fetchDigest, fetchTopic, fetchTopics } from './services/api';
+import { fetchNewsCategory } from './services/api';
 import './App.css';
 
 type Cluster = {
@@ -15,7 +16,10 @@ type Cluster = {
     source?: string;
     publishedAt?: string;
     summary?: string;
+    description?: string;
     sentiment?: 'positive' | 'neutral' | 'negative';
+    summaryProvider?: 'gemini' | 'openai' | 'fallback';
+    fallbackUsed?: boolean;
   }>;
 };
 
@@ -39,6 +43,9 @@ function App() {
   const [activeTopic, setActiveTopic] = useState<string | null>(null);
   const [topicQuery, setTopicQuery] = useState('');
   const [availableTopics, setAvailableTopics] = useState<string[]>([]);
+  const [newsArticles, setNewsArticles] = useState<Array<any>>([]);
+  const [newsLoading, setNewsLoading] = useState(false);
+  const [newsCategory, setNewsCategory] = useState<string | null>(null);
 
   const loadDigest = async () => {
     setLoading(true);
@@ -78,6 +85,22 @@ function App() {
       setError(err instanceof Error ? err.message : 'Failed to load topic');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const loadNewsCategory = async (category?: string) => {
+    setNewsLoading(true);
+    setNewsArticles([]);
+    setNewsCategory(category ?? null);
+
+    try {
+      const response = await fetchNewsCategory(category ?? '');
+      // response.articles expected
+      setNewsArticles(response.articles ?? []);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to load news');
+    } finally {
+      setNewsLoading(false);
     }
   };
 
@@ -162,6 +185,11 @@ function App() {
         <button type="button" onClick={() => void loadDigest()}>
           All topics
         </button>
+        <button type="button" onClick={() => void loadNewsCategory()}>All news</button>
+        <button type="button" onClick={() => void loadNewsCategory('local')}>Local</button>
+        <button type="button" onClick={() => void loadNewsCategory('state')}>State</button>
+        <button type="button" onClick={() => void loadNewsCategory('national')}>National</button>
+        <button type="button" onClick={() => void loadNewsCategory('international')}>International</button>
         {availableTopics.map((topic) => (
           <button key={topic} type="button" onClick={() => void loadTopic(topic)}>
             {topic}
@@ -170,9 +198,32 @@ function App() {
       </section>
 
       {error ? <ErrorBanner message={error} onRetry={() => void loadDigest()} /> : null}
-
       {loading ? (
         <LoadingSpinner />
+      ) : newsCategory || newsArticles.length ? (
+        <main className="news-list">
+          {newsLoading ? (
+            <LoadingSpinner />
+          ) : (
+            newsArticles.map((a, idx) => {
+              const providerLabel = a.summaryProvider === 'gemini' ? 'Gemini' 
+                : a.summaryProvider === 'openai' ? 'OpenAI' 
+                : a.summaryProvider === 'fallback' ? 'Fallback' 
+                : 'Local';
+              const displaySummary = a.summary || a.description || 'No summary available';
+              
+              return (
+                <article key={idx} className="news-item">
+                  <h3><a href={a.sourceUrl} target="_blank" rel="noreferrer">{a.title || 'Untitled'}</a></h3>
+                  <p className="meta">
+                    {a.source || 'Unknown source'} • {new Date(a.publishedAt).toLocaleString()} • <span className={`provider-badge provider-${a.summaryProvider || 'local'}`}>{providerLabel}</span>
+                  </p>
+                  <p className="article-summary">{displaySummary}</p>
+                </article>
+              );
+            })
+          )}
+        </main>
       ) : (
         <main className="cluster-grid">
           {visibleClusters.map((cluster) => (

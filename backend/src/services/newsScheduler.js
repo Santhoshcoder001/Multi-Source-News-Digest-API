@@ -35,7 +35,9 @@ async function runDigest() {
   try {
     console.log('Starting news collection...');
 
-    const articles = await collectAllNews();
+    const allArticles = await collectAllNews();
+    // Limit articles to a small number to avoid rate-limit storms
+    const articles = Array.isArray(allArticles) ? allArticles.slice(0, 5) : [];
     const clusters = await processArticles(articles);
     const todayKey = getTodayKey();
     const articleCount = Array.isArray(articles) ? articles.length : 0;
@@ -54,11 +56,7 @@ async function runDigest() {
 
     return digestStore.get(todayKey) ?? null;
   } catch (error) {
-    console.error('[newsScheduler] Failed to run digest', {
-      errorName: error?.name,
-      errorMessage: error?.message,
-      errorStack: error?.stack
-    });
+    console.warn('[newsScheduler] Failed to run digest', String(error?.message ?? 'Unknown error'));
 
     return null;
   } finally {

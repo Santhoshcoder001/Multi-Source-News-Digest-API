@@ -3,6 +3,7 @@ import cors from 'cors';
 import env from './config/env.js';
 import digestRouter from './routes/digest.js';
 import topicRouter from './routes/topic.js';
+import newsRouter from './routes/news.js';
 import { startScheduler, stopScheduler } from './services/newsScheduler.js';
 import authMiddleware from './middleware/auth.js';
 import { generalLimiter, strictLimiter } from './middleware/rateLimiter.js';
@@ -34,6 +35,7 @@ app.get('/health', (req, res) => {
 app.use('/api', authMiddleware);
 app.use('/api', strictLimiter, digestRouter);
 app.use('/api', topicRouter);
+app.use('/api', strictLimiter, newsRouter);
 
 // Serve the generated OpenAPI documentation.
 setupSwagger(app);

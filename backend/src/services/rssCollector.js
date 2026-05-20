@@ -58,7 +58,7 @@ export async function fetchFromRss(feedUrl, sourceName) {
       .slice(0, 15)
       .map(({ item }) => normalizeItem(item, sourceName));
   } catch (error) {
-    console.error(`[rssCollector] Failed to fetch or parse RSS feed from ${feedUrl}`, error);
+    console.warn(`[rssCollector] Failed to fetch or parse RSS feed from ${feedUrl}`, String(error?.message ?? 'Unknown error'));
     return [];
   }
 }
